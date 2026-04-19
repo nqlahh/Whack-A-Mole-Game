@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whack-A-Mole</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #222; color: white; }
+        .grid { display: grid; grid-template-columns: repeat(3, 120px); gap: 10px; justify-content: center; margin-top: 20px; }
+        .hole { width: 120px; height: 120px; background: #444; border: 4px solid #555; border-radius: 50%; cursor: pointer; position: relative; overflow: hidden; }
+        .mole { width: 80px; height: 80px; background: brown; border-radius: 50%; position: absolute; top: 120px; left: 20px; transition: top 0.2s; }
+        .mole.up { top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Whack-A-Mole!</h1>
+    <h3>Score: <span id="score">0</span></h3>
+    <div class="grid">
+        <div class="hole"><div class="mole"></div></div>
+        <div class="hole"><div class="mole"></div></div>
+        <div class="hole"><div class="mole"></div></div>
+        <div class="hole"><div class="mole"></div></div>
+        <div class="hole"><div class="mole"></div></div>
+        <div class="hole"><div class="mole"></div></div>
+    </div>
+
+    <script>
+        const moles = document.querySelectorAll('.mole');
+        const scoreBoard = document.querySelector('#score');
+        let score = 0;
+
+        function peek() {
+            const time = Math.random() * (1000 - 500) + 500;
+            const hole = Math.floor(Math.random() * moles.length);
+            moles[hole].classList.add('up');
+            setTimeout(() => {
+                moles[hole].classList.remove('up');
+                peek();
+            }, time);
+        }
+
+        moles.forEach(mole => mole.addEventListener('click', () => {
+            score++;
+            scoreBoard.textContent = score;
+            mole.classList.remove('up');
+        }));
+
+        peek();
+    </script>
+</body>
+</html>
